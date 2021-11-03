@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&family=Montserrat&display=swap');
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+}
+
+:root {
+  --black: #222;
+  --white: #fff;
+  --primary-200: #c1beff;
+  --primary-500: #645cff;
+  --primary-700: #3c3799;
+  --grey-50: #f8fafc;
+  --grey-200: #e2e8f0;
+  --grey-400: #94a3b8;
+  --grey-900: #0f172a;
+  --red-light: #f8d7da;
+  --red-dark: #842029;
+  --green-light: #d1e7dd;
+  --green-dark: #0f5132;
+  --headingFont: 'Roboto', sans-serif;
+  --bodyFont: 'Nunito', sans-serif;
+  --smallText: 0.7em;
+  --backgroundColor: var(--grey-50);
+  --textColor: var(--grey-900);
+  --borderRadius: 0.25rem;
+  --letterSpacing: 1px;
+  --transition: 0.3s ease-in-out all;
+  --max-width: 1120px;
+  --fixed-width: 500px;
+  --fluid-width: 90vw;
+  --shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+body {
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--textColor);
+  font-family: var(--bodyFont);
+  background: var(--backgroundColor);
+}
+
+p {
+  max-width: 40em;
+  margin-bottom: 1.5rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-bottom: 1.38rem;
+  text-transform: capitalize;
+  font-family: var(--headingFont);
+  letter-spacing: var(--letterSpacing);
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 3.052rem;
+}
+
+h2 {
+  font-size: 2.441rem;
+}
+
+h3 {
+  font-size: 1.953rem;
+}
+
+h4 {
+  font-size: 1.563rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+small,
+.text-small {
+  font-size: var(--smallText);
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+.img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.btn {
+  cursor: pointer;
+  border: transparent;
+  color: var(--white);
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  text-transform: capitalize;
+  box-shadow: var(--shadow-1);
+  transition: var(--transition);
+  background: var(--primary-500);
+  border-radius: var(--borderRadius);
+  letter-spacing: var(--letterSpacing);
+}
+
+.btn:hover {
+  box-shadow: var(--shadow-3);
+  background: var(--primary-700);
+}
+
+.btn-hipster {
+  color: var(--primary-500);
+  background: var(--primary-200);
+}
+
+.btn-hipster:hover {
+  color: var(--primary-200);
+  background: var(--primary-700);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-small {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+}
+
+.alert {
+  margin: 0 auto;
+  text-align: center;
+  width: var(--fluid-width);
+  padding: 0.375rem 0.75rem;
+  border-color: transparent;
+  text-transform: capitalize;
+  max-width: var(--fixed-width);
+  border-radius: var(--borderRadius);
+}
+
+.alert-danger {
+  color: var(--red-dark);
+  background: var(--red-light);
+}
+
+.alert-success {
+  color: var(--green-dark);
+  background: var(--green-light);
+}
+
+.form {
+  margin: 3rem auto;
+  position: relative;
+  padding: 2rem 2.5rem;
+  background: var(--white);
+  width: var(--fluid-width);
+  box-shadow: var(--shadow-2);
+  max-width: var(--fixed-width);
+  border-radius: var(--borderRadius);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+  font-size: var(--smallText);
+  letter-spacing: var(--letterSpacing);
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  outline: none;
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--borderRadius);
+  background: var(--backgroundColor);
+  border: 1px solid var(--grey-200);
+}
+
+.form-row {
+  margin-bottom: 1rem;
+}
+
+.form-textarea {
+  height: 7rem;
+}
+
+::placeholder {
+  font-family: inherit;
+  color: var(--grey-400);
+}
+
+.form-alert {
+  color: var(--red-dark);
+  text-transform: capitalize;
+  letter-spacing: var(--letterSpacing);
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  width: 6rem;
+  height: 6rem;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 5px solid var(--grey-400);
+  border-top-color: var(--primary-500);
+  animation: spinner 0.6s linear infinite;
+}
+
+.title {
+  text-align: center;
+}
+
+.title-underline {
+  width: 7rem;
+  margin: 0 auto;
+  height: 0.25rem;
+  margin-top: -1rem;
+  background: var(--primary-500);
+}
+
+.page {
+  margin: 0 auto;
+  padding-top: 3rem;
+  width: var(--fluid-width);
+  max-width: var(--max-width);
+  min-height: calc(100vh - 6rem);
+}
+
+.page-center {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+}
+
+.form-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--borderRadius);
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  cursor: not-allowed;
+}
