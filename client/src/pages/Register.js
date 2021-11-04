@@ -41,9 +41,11 @@ export default function Register() {
             setSuccess(true);
             setValues({ name: '', email: '', password: '' });
             showAlert({ text: data.msg, type: 'success' });
+            console.log(data);
         } catch (error) {
-            const { msg } = error.response.data;
-            showAlert({ text: msg || 'there was an error' });
+            // const { msg } = error.response.data;
+            // showAlert({ text: msg || 'there was an error' });
+            console.log(error);
         }
         setLoading(false);
     }
