@@ -15,7 +15,7 @@ export default function Navbar() {
                 </Link>
             </div>
             {user && (<div className="nav-links">
-                <p>Hello, name</p>
+                <p>Hello, {user.name}</p>
                 <button className="btn btn-small"
                     onClick={() => logoutUser()}>
                     logout

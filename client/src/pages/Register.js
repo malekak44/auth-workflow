@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import FormRow from '../components/FormRow';
 import useLocalState from '../utils/localState';
+import { useGlobalContext } from '../context';
 
 export default function Register() {
+    const { saveUser } = useGlobalContext();
     const [values, setValues] = useState({
         name: '',
         email: '',
@@ -41,10 +43,10 @@ export default function Register() {
             setSuccess(true);
             setValues({ name: '', email: '', password: '' });
             showAlert({ text: data.msg, type: 'success' });
-            console.log(data);
+            saveUser(data.user);
         } catch (error) {
-            // const { msg } = error.response.data;
-            // showAlert({ text: msg || 'there was an error' });
+            const { msg } = error.response.data;
+            showAlert({ text: msg || 'there was an error' });
             console.log(error);
         }
         setLoading(false);

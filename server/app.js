@@ -13,7 +13,7 @@ const errorHandler = require('./middleware/error-handler');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cookieParser());
 app.use('/api/v1/auth', authRouter);
 app.use(notFound);
 app.use(errorHandler);
