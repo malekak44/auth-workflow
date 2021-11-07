@@ -15,7 +15,7 @@ export default function Navbar() {
                 </Link>
             </div>
             {user && (<div className="nav-links">
-                <p>Hello, {user.name}</p>
+                <p>Hello, {user.name.split(' ')[0]}</p>
                 <button className="btn btn-small"
                     onClick={() => logoutUser()}>
                     logout

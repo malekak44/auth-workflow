@@ -154,12 +154,11 @@ ul {
 
 .alert {
   margin: 0 auto;
+  max-width: 50rem;
   text-align: center;
   width: var(--fluid-width);
   padding: 0.375rem 0.75rem;
   border-color: transparent;
-  text-transform: capitalize;
-  max-width: var(--fixed-width);
   border-radius: var(--borderRadius);
 }
 

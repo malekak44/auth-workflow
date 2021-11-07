@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 import url from './utils/url';
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
-    const [isLoading, setIsLoading] = useState(true);
+    // const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState(null);
 
     const saveUser = (user) => {
@@ -15,15 +15,15 @@ const AppProvider = ({ children }) => {
         setUser(null);
     }
 
-    const fetchUser = async () => {
-        try {
-            const { data } = await axios.get(`${url}/api/v1/auth/user`);
-            saveUser(data.user);
-        } catch (error) {
-            removeUser();
-        }
-        setIsLoading(false);
-    }
+    // const fetchUser = async () => {
+    //     try {
+    //         const { data } = await axios.get(`${url}/api/v1/auth/user`);
+    //         saveUser(data.user);
+    //     } catch (error) {
+    //         removeUser();
+    //     }
+    //     setIsLoading(false);
+    // }
 
     const logoutUser = async () => {
         try {
@@ -34,14 +34,14 @@ const AppProvider = ({ children }) => {
         }
     }
 
-    useEffect(() => {
-        fetchUser();
-    }, []);
+    // useEffect(() => {
+    //     fetchUser();
+    // }, []);
 
     return (
         <AppContext.Provider
             value={{
-                isLoading,
+                // isLoading,
                 user,
                 saveUser,
                 logoutUser,
