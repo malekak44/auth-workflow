@@ -88,10 +88,6 @@ const logout = async (req, res) => {
     res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
 }
 
-const getUser = async (req, res) => {
-
-}
-
 const verifyEmail = async (req, res) => {
     const { email, verificationToken } = req.body;
 
@@ -154,7 +150,7 @@ const resetPassword = async (req, res) => {
     const currentDate = new Date();
 
     if (user.passwordToken === passwordToken && user.passwordTokenExpirationDate > currentDate) {
-        user.password  = password;
+        user.password = password;
         user.passwordToken = null;
         user.passwordTokenExpirationDate = null;
         await user.save();
@@ -167,7 +163,6 @@ module.exports = {
     register,
     login,
     logout,
-    getUser,
     verifyEmail,
     forgotPassword,
     resetPassword,
