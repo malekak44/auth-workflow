@@ -44,10 +44,10 @@ export default function App() {
         <Route exact path="/forgot-password">
           <ForgotPassword />
         </Route>
-        <Route exact path="/user/verify-email">
+        <Route exact path="/verify-email">
           <Verify />
         </Route>
-        <Route exact path="/user/reset-password">
+        <Route exact path="/reset-password">
           <ResetPassword />
         </Route>
         <Route path="*">

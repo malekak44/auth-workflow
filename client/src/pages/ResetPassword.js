@@ -39,14 +39,13 @@ export default function ResetPassword() {
         try {
             const { data } = await axios.post(`${url}/api/v1/auth/reset-password`, {
                 password,
-                token: query.get('token'),
+                passwordToken: query.get('token'),
                 email: query.get('email'),
             });
-            console.log(data);
             setLoading(false);
             setSuccess(true);
             showAlert({
-                text: `Success, redirecting to login page shortly`,
+                text: `${data.msg}`,
                 type: 'success',
             });
             setTimeout(() => {

@@ -8,6 +8,7 @@ const crypto = require('crypto');
 const Errors = require('../errors');
 const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
+const origin = 'http://localhost:3000';
 
 const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -31,8 +32,6 @@ const register = async (req, res) => {
     const tokenUser = createTokenUser(user);
     attachCookiesToResponse({ res, user: { name, email, password, role } });
 
-    const origin = 'http://localhost:3000';
-
     const emailUrl = await sendVerificationEmail({
         name: user.name,
         email: user.email,
@@ -55,16 +54,23 @@ const login = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-        throw new Errors.UnauthenticatedError('Invalid Credentials');
+        throw new Errors.UnauthenticatedError('User does not exist');
     }
 
     const isPasswordCorrect = await user.comparePassword(password);
     if (!isPasswordCorrect) {
-        throw new Errors.UnauthenticatedError('Invalid Credentials');
+        throw new Errors.UnauthenticatedError('Password is not correct');
     }
 
     if (!user.isVerified) {
-        throw new Errors.UnauthenticatedError('Please verify your email');
+        const emailUrl = await sendVerificationEmail({
+            name: user.name,
+            email: user.email,
+            verificationToken: user.verificationToken,
+            origin,
+        });
+
+        throw new Errors.UnauthenticatedError(`Please go to the link to verify account ⬇ \n ${emailUrl}`);
     }
 
     const tokenUser = createTokenUser(user);
@@ -99,17 +105,62 @@ const verifyEmail = async (req, res) => {
     }
 
     user.isVerified = true;
+    user.verificationToken = null;
     await user.save();
 
     res.status(StatusCodes.OK).json({ msg: 'Account Confirmed' });
 }
 
-const resetPassword = async (req, res) => {
+const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    if (!email) {
+        throw new Errors.BadRequestError('Please provide valid email');
+    }
 
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw new Errors.UnauthenticatedError('User does not exist');
+    }
+
+    const passwordToken = crypto.randomBytes(30).toString('hex');
+    const emailUrl = await sendResetPasswordEmail({
+        name: user.name,
+        email: user.email,
+        passwordToken: passwordToken,
+        origin,
+    });
+
+    const tenMinutes = 1000 * 60 * 10;
+    const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes);
+
+    user.passwordToken = passwordToken;
+    user.passwordTokenExpirationDate = passwordTokenExpirationDate;
+    await user.save();
+
+    res.status(StatusCodes.OK).json({ msg: emailUrl });
 }
 
-const forgotPassword = async (req, res) => {
+const resetPassword = async (req, res) => {
+    const { email, password, passwordToken } = req.body;
+    if (!email, !password, !passwordToken) {
+        throw new Errors.BadRequestError('Please provide all values');
+    }
 
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw new Errors.UnauthenticatedError('User does not exist');
+    }
+
+    const currentDate = new Date();
+
+    if (user.passwordToken === passwordToken && user.passwordTokenExpirationDate > currentDate) {
+        user.password  = password;
+        user.passwordToken = null;
+        user.passwordTokenExpirationDate = null;
+        await user.save();
+    }
+
+    res.status(StatusCodes.OK).json({ msg: 'Password reseted successfully' });
 }
 
 module.exports = {
@@ -118,6 +169,6 @@ module.exports = {
     logout,
     getUser,
     verifyEmail,
-    resetPassword,
     forgotPassword,
+    resetPassword,
 }
