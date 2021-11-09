@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import FormRow from '../components/FormRow';
 import useLocalState from '../utils/localState';
 import { useGlobalContext } from '../context';
+axios.defaults.withCredentials = true;
 
 export default function Register() {
     const { saveUser } = useGlobalContext();
@@ -38,7 +39,7 @@ export default function Register() {
         try {
             const { data } = await axios.post(
                 `${url}/api/v1/auth/register`,
-                registerNewUser
+                registerNewUser, { withCredentials: true }
             );
             setSuccess(true);
             setValues({ name: '', email: '', password: '' });

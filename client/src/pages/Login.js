@@ -6,6 +6,7 @@ import FormRow from '../components/FormRow';
 import { useGlobalContext } from '../context';
 import useLocalState from '../utils/localState';
 import { Link, useHistory } from 'react-router-dom';
+axios.defaults.withCredentials = true;
 
 export default function Login() {
     const { saveUser } = useGlobalContext();
@@ -33,13 +34,13 @@ export default function Login() {
         const { email, password } = values;
         const loginUser = { email, password };
         try {
-            const { data } = await axios.post(`${url}/api/v1/auth/login`, loginUser);
+            const { data } = await axios.post(`${url}/api/v1/auth/login`, loginUser, { withCredentials: true });
             setValues({ email: '', password: '' });
             showAlert({
                 text: `Welcome, ${data.user.name}. Redirecting to dashboard...`,
                 type: 'success',
             });
-            setLoading(false);;
+            setLoading(false);
             saveUser(data.user);
             history.push('/dashboard');
         } catch (error) {

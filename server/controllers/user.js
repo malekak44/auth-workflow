@@ -10,13 +10,13 @@ const getUser = async (req, res) => {
         throw new Errors.UnauthenticatedError('User does not exist');
     }
 
-    res.status(StatusCodes.OK).json({ user });
+    res.status(StatusCodes.OK).json({ user: { userId: user._id, name: user.name, role: user.role } });
 }
 
 const getAllUsers = async (req, res) => {
     const users = await User.find({});
 
-    res.status(StatusCodes.OK).json(users);
+    res.status(StatusCodes.OK).json({ msg: 'All users fetched', users: users });
 }
 
 module.exports = { getUser, getAllUsers };

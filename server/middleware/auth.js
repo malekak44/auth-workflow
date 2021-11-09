@@ -11,8 +11,8 @@ const authenticateUser = async (req, res, next) => {
     }
 
     // check cookies
-    if (req.cookie.token) {
-        token = req.cookie.token;
+    else if (req.signedCookies.token) {
+        token = req.signedCookies.token;
     }
 
     if (!token) {
@@ -20,14 +20,13 @@ const authenticateUser = async (req, res, next) => {
     }
 
     try {
-        const payload = isTokenValid(token);
+        const payload = isTokenValid({ token });
 
         // attach the user and his permissions to the req object
         req.user = {
-            userId: payload.user.userId,
-            role: payload.user.role,
+            userId: payload.userId,
+            role: payload.role,
         };
-
         next();
     } catch (error) {
         throw new Errors.UnauthenticatedError('Authentication invalid');

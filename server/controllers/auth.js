@@ -8,7 +8,7 @@ const crypto = require('crypto');
 const Errors = require('../errors');
 const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
-const origin = 'http://localhost:3000';
+const origin = 'https://auth-workflow.netlify.app';
 
 const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -30,7 +30,7 @@ const register = async (req, res) => {
 
     const user = await User.create({ name, email, password, role, verificationToken });
     const tokenUser = createTokenUser(user);
-    attachCookiesToResponse({ res, user: { name, email, password, role } });
+    attachCookiesToResponse({ res, user: tokenUser });
 
     const emailUrl = await sendVerificationEmail({
         name: user.name,
@@ -74,7 +74,7 @@ const login = async (req, res) => {
     }
 
     const tokenUser = createTokenUser(user);
-    attachCookiesToResponse({ res, user: { email, password } });
+    attachCookiesToResponse({ res, user: tokenUser });
 
     res.status(StatusCodes.CREATED).json({ msg: 'user logged in successfully', user: tokenUser });
 }
