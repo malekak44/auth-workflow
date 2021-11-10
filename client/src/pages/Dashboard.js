@@ -88,6 +88,9 @@ const Wrapper = styled.section`
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
+        @media only screen and (max-width: 728px) {
+           justify-content: center;
+        }
     }
     #users .user_div {
         width: 30%;
@@ -95,5 +98,8 @@ const Wrapper = styled.section`
         padding-left: 1.5rem;
         margin-bottom: 1.5rem;
         border: 1px solid var(--primary-500);
+        @media only screen and (max-width: 728px) {
+           width: 100%;
+        }
     }
 `;
