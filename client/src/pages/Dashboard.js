@@ -93,6 +93,7 @@ const Wrapper = styled.section`
         width: 30%;
         border-radius: 5px;
         padding-left: 1.5rem;
+        margin-bottom: 1.5rem;
         border: 1px solid var(--primary-500);
     }
 `;
