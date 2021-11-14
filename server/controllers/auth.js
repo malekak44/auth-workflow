@@ -7,6 +7,7 @@ const {
 const crypto = require('crypto');
 const Errors = require('../errors');
 const User = require('../models/User');
+const Token = require('../models/Token');
 const { StatusCodes } = require('http-status-codes');
 const origin = 'https://auth-workflow.netlify.app';
 
@@ -27,10 +28,7 @@ const register = async (req, res) => {
     const role = isFirstAccount ? 'admin' : 'user';
 
     const verificationToken = crypto.randomBytes(40).toString('hex');
-
     const user = await User.create({ name, email, password, role, verificationToken });
-    const tokenUser = createTokenUser(user);
-    attachCookiesToResponse({ res, user: tokenUser });
 
     const emailUrl = await sendVerificationEmail({
         name: user.name,
@@ -40,8 +38,7 @@ const register = async (req, res) => {
     });
 
     res.status(StatusCodes.CREATED).json({
-        msg: `Success! Please go to the link to verify account ⬇ \n ${emailUrl}`,
-        user: tokenUser,
+        msg: `Success! Please go to the link to verify account ⬇ \n ${emailUrl}`
     });
 }
 
@@ -74,9 +71,34 @@ const login = async (req, res) => {
     }
 
     const tokenUser = createTokenUser(user);
-    attachCookiesToResponse({ res, user: tokenUser });
 
-    res.status(StatusCodes.CREATED).json({ msg: 'user logged in successfully', user: tokenUser });
+    let refreshToken = '';
+    const existingToken = await Token.findOne({ user: user._id });
+
+    if (existingToken) {
+        const { isValid } = existingToken;
+        if (!isValid) {
+            throw new Errors.UnauthenticatedError('Invalid Credentials');
+        }
+        refreshToken = existingToken.refreshToken;
+        attachCookiesToResponse({ res, user: tokenUser, refreshToken });
+        res
+            .status(StatusCodes.CREATED)
+            .json({ msg: 'user logged in successfully', user: tokenUser });
+        return;
+    }
+
+    refreshToken = crypto.randomBytes(40).toString('hex');
+    const userAgent = req.headers['user-agent'];
+    const ip = req.ip;
+    const userToken = { refreshToken, ip, userAgent, user: user._id };
+
+    await Token.create(userToken);
+    attachCookiesToResponse({ res, user: tokenUser, refreshToken });
+
+    res
+        .status(StatusCodes.CREATED)
+        .json({ msg: 'user logged in successfully', user: tokenUser });
 }
 
 const logout = async (req, res) => {
