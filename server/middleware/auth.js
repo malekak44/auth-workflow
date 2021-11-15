@@ -9,13 +9,13 @@ const authenticateUser = async (req, res, next) => {
     const { accessToken, refreshToken } = req.signedCookies;
 
     try {
-        if (accessToken) {
-            const payload = isTokenValid({ accessToken });
-            req.user = payload.user;
+        if (accessToken && refreshToken) {
+            const payload = isTokenValid(accessToken);
+            req.user = payload;
             return next();
         }
 
-        const payload = isTokenValid({ refreshToken });
+        const payload = isTokenValid(refreshToken);
 
         const existingToken = await Token.findOne({
             user: payload.user.userId,
