@@ -102,12 +102,12 @@ const login = async (req, res) => {
 }
 
 const logout = async (req, res) => {
-    res.cookie('token', 'logout', {
-        httpOnly: true,
-        expires: new Date(Date.now() + 1000),
-    });
+    const cookies = ['accessToken', 'refreshToken'];
+    cookies.forEach(cookie => res.clearCookie(cookie));
 
-    res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
+    res
+        .status(StatusCodes.OK)
+        .json({ msg: 'user logged out' });
 }
 
 const verifyEmail = async (req, res) => {
